@@ -1,0 +1,16 @@
+on:
+  reddit:
+    url: https://www.reddit.com/r/migraine/new/
+jobs:
+  discord:
+    name: Send a message to discord
+    runs-on: ubuntu-latest
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_REDDIT_NEW }}
+          DISCORD_USERNAME: ${{ secrets.DISCORD_USERNAME_REDDIT }}
+          DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_REDDIT }}
+        uses: Ilshidur/action-discord@master
+        with:
+          args: "`Migraine - Reddit - New 🆕`'\n'**${{on.reddit.outputs.title}}**'\n'${{on.reddit.outputs.link}}"
