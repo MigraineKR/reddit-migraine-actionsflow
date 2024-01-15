@@ -6,6 +6,12 @@ jobs:
     name: Send a message to discord
     runs-on: ubuntu-latest
     steps:
+      - name: Escape Quotes
+        id: escape
+        run: |
+          title="${{on.reddit.outputs.title}}"
+          escaped_title=$(echo "$title" | sed "s/'/\\\'/g")
+          echo "::set-output name=escaped_title::$escaped_title"
       - name: Discord notification
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_REDDIT_NEW }}
@@ -13,4 +19,4 @@ jobs:
           DISCORD_AVATAR: ${{ secrets.DISCORD_AVATAR_REDDIT }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "`Migraine - Reddit - New 🆕`'\n'**${{on.reddit.outputs.title}}**'\n'${{on.reddit.outputs.link}}"
+          args: "`Migraine - Reddit - New 🆕`'\n'**${{steps.escape.outputs.escaped_title}}**'\n'${{on.reddit.outputs.link}}"
