@@ -10,7 +10,7 @@ jobs:
         id: escape
         run: |
           title="${{on.reddit.outputs.title}}"
-          escaped_title=$(echo "$title" | sed "s/'/\\\'/g")
+          escaped_title=$(echo "$title" | sed "s/'/\\\'/g" | sed 's/"/\\"/g')
           echo "::set-output name=escaped_title::$escaped_title"
       - name: Discord notification
         env:
